@@ -1,0 +1,32 @@
+{
+  "index_patterns": [
+    "%%TEMPLATE_PATTERN%%"
+  ],
+  "template": {
+    "settings": {
+    "number_of_shards": %%CONF_SHARDS%%,
+    "number_of_replicas": %%REPLICAS%%
+    },
+    "mappings": {
+      "_meta": {
+        "version": "%%VERSION%%",
+        "name": "%%PREFIX%%"
+      },
+      "dynamic": "strict",
+      "properties": {
+        "timestamp": {
+          "type": "date"
+        },
+        "successful": {
+          "type": "boolean"
+        },
+        "email": {
+          "type": "keyword"
+        }
+      }
+    },
+    "aliases": {
+      "%%ALIAS%%": {}
+    }
+  }
+}

@@ -1,0 +1,949 @@
+{
+  "index_patterns": [
+    "%%TEMPLATE_PATTERN%%"
+  ],
+  "template": {
+    "settings": {
+      "number_of_shards": %%SHARDS%%,
+      "number_of_replicas": %%REPLICAS%%,
+      "index.mapping.total_fields.limit": 2000,
+      "index.refresh_interval": "10s"
+    },
+    "mappings": {
+      "_meta": {
+        "version": "%%VERSION%%",
+        "name": "%%PREFIX%%"
+      },
+      "dynamic": "strict",
+      "properties": {
+        "id": {
+          "type": "keyword",
+          "ignore_above": 64
+        },
+        "name": {
+          "type": "keyword"
+        },
+        "metadata": {
+          "properties": {
+            "aux": {
+              "type": "flattened"
+            },
+            "time": {
+              "properties": {
+                "insert": {
+                  "type": "date",
+                  "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                },
+                "create": {
+                  "type": "date",
+                  "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                },
+                "update": {
+                  "type": "date",
+                  "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                },
+                "process_time": {
+                  "type": "float"
+                },
+                "total_time": {
+                  "type": "float"
+                }
+              }
+            },
+            "status": {
+              "type": "keyword",
+              "null_value": "NULL",
+              "ignore_above": 32
+            },
+            "channel": {
+              "type": "keyword"
+            },
+            "ip": {
+              "type": "keyword"
+            },
+            "processed_by": {
+              "properties": {
+                "rules": {
+                  "type": "keyword"
+                },
+                "flows": {
+                  "type": "keyword"
+                },
+                "third_party": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "profile_less": {
+              "type": "boolean"
+            },
+            "valid": {
+              "type": "boolean"
+            },
+            "warning": {
+              "type": "boolean"
+            },
+            "error": {
+              "type": "boolean"
+            },
+            "merge": {
+              "type": "boolean"
+            },
+            "instance": {
+              "properties": {
+                "id": {
+                  "type": "keyword",
+                  "ignore_above": 40
+                }
+              }
+            },
+            "debug": {
+              "type": "boolean"
+            }
+          }
+        },
+        "type": {
+          "type": "keyword",
+          "null_value": "NULL"
+        },
+        "request": {
+          "enabled": false,
+          "dynamic": "true",
+          "type": "object"
+        },
+        "source": {
+          "properties": {
+            "id": {
+              "type": "keyword",
+              "ignore_above": 64
+            }
+          }
+        },
+        "device": {
+          "properties": {
+            "name": {
+              "type": "keyword"
+            },
+            "brand": {
+              "type": "keyword"
+            },
+            "model": {
+              "type": "keyword"
+            },
+            "ip": {
+              "type": "keyword",
+              "ignore_above": 18
+            },
+            "type": {
+              "type": "keyword"
+            },
+            "touch": {
+              "type": "boolean"
+            },
+            "resolution": {
+              "type": "keyword",
+              "ignore_above": 32
+            },
+            "color_depth": {
+              "type": "integer"
+            },
+            "orientation": {
+              "type": "keyword",
+              "ignore_above": 32
+            },
+            "geo": {
+              "properties": {
+                "country": {
+                  "properties": {
+                    "name": {
+                      "type": "keyword"
+                    },
+                    "code": {
+                      "type": "keyword",
+                      "ignore_above": 10
+                    }
+                  }
+                },
+                "county": {
+                  "type": "keyword",
+                  "ignore_above": 64
+                },
+                "city": {
+                  "type": "keyword",
+                  "ignore_above": 64
+                },
+                "latitude": {
+                  "type": "float"
+                },
+                "longitude": {
+                  "ignore_malformed": true,
+                  "type": "float"
+                },
+                "location": {
+                  "type": "geo_point"
+                },
+                "postal": {
+                  "type": "keyword",
+                  "ignore_above": 24
+                }
+              }
+            }
+          }
+        },
+        "os": {
+          "properties": {
+            "name": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "version": {
+              "type": "keyword",
+              "ignore_above": 32
+            }
+          }
+        },
+        "app": {
+          "properties": {
+            "type": {
+              "type": "keyword"
+            },
+            "bot": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "version": {
+              "type": "keyword"
+            },
+            "language": {
+              "type": "keyword",
+              "ignore_above": 32
+            },
+            "resolution": {
+              "type": "keyword",
+              "ignore_above": 32
+            }
+          }
+        },
+        "hit": {
+          "properties": {
+            "name": {
+              "type": "keyword"
+            },
+            "url": {
+              "type": "keyword"
+            },
+            "referer": {
+              "type": "keyword"
+            },
+            "query": {
+              "type": "keyword"
+            },
+            "category": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "id": {
+              "type": "keyword",
+              "ignore_above": 32
+            }
+          }
+        },
+        "utm": {
+          "properties": {
+            "source": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "medium": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "campaign": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "term": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "content": {
+              "type": "keyword",
+              "ignore_above": 96
+            }
+          }
+        },
+        "history": {
+          "properties": {
+            "page": {
+              "properties": {
+                "name": {
+                  "type": "keyword",
+                  "ignore_above": 64
+                },
+                "url": {
+                  "type": "keyword"
+                },
+                "referer": {
+                  "type": "keyword"
+                },
+                "query": {
+                  "type": "keyword"
+                },
+                "category": {
+                  "type": "keyword",
+                  "ignore_above": 64
+                }
+              }
+            }
+          }
+        },
+        "session": {
+          "properties": {
+            "id": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "start": {
+              "type": "date",
+              "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+            },
+            "duration": {
+              "type": "float"
+            },
+            "tz": {
+              "type": "keyword",
+              "ignore_above": 64
+            }
+          }
+        },
+        "profile": {
+          "dynamic": "false",
+          "properties": {
+            "id": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "primary_id": {
+              "type": "keyword",
+              "ignore_above": 64,
+              "null_value": "NULL"
+            }
+          }
+        },
+        "entity": {
+          "dynamic": "false",
+          "properties": {
+            "id": {
+              "type": "keyword",
+              "ignore_above": 64
+            }
+          }
+        },
+        "aux": {
+          "type": "flattened"
+        },
+        "trash": {
+          "type": "flattened"
+        },
+        "config": {
+          "dynamic": "true",
+          "type": "object",
+          "enabled": false
+        },
+        "context": {
+          "type": "flattened"
+        },
+        "properties": {
+          "type": "flattened"
+        },
+        "traits": {
+          "dynamic": "true",
+          "type": "object"
+        },
+        "data": {
+          "properties": {
+            "media": {
+              "properties": {
+                "image": {
+                  "type": "keyword"
+                },
+                "webpage": {
+                  "type": "keyword"
+                },
+                "social": {
+                  "properties": {
+                    "twitter": {
+                      "type": "keyword"
+                    },
+                    "facebook": {
+                      "type": "keyword"
+                    },
+                    "youtube": {
+                      "type": "keyword"
+                    },
+                    "instagram": {
+                      "type": "keyword"
+                    },
+                    "tiktok": {
+                      "type": "keyword"
+                    },
+                    "linkedin": {
+                      "type": "keyword"
+                    },
+                    "reddit": {
+                      "type": "keyword"
+                    },
+                    "other": {
+                      "type": "flattened"
+                    }
+                  }
+                }
+              }
+            },
+            "pii": {
+              "properties": {
+                "firstname": {
+                  "type": "keyword"
+                },
+                "lastname": {
+                  "type": "keyword"
+                },
+                "display_name": {
+                  "type": "keyword"
+                },
+                "birthday": {
+                  "type": "date",
+                  "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                },
+                "language": {
+                  "properties": {
+                    "native": {
+                      "type": "keyword"
+                    },
+                    "spoken": {
+                      "type": "keyword"
+                    }
+                  }
+                },
+                "gender": {
+                  "type": "keyword"
+                },
+                "education": {
+                  "properties": {
+                    "level": {
+                      "type": "keyword"
+                    }
+                  }
+                },
+                "civil": {
+                  "properties": {
+                    "status": {
+                      "type": "keyword"
+                    }
+                  }
+                },
+                "attributes": {
+                  "properties": {
+                    "height": {
+                      "type": "float"
+                    },
+                    "weight": {
+                      "type": "float"
+                    },
+                    "shoe_number": {
+                      "type": "float"
+                    }
+                  }
+                }
+              }
+            },
+            "identifier": {
+              "properties": {
+                "id": {
+                  "type": "keyword",
+                  "ignore_above": 64
+                },
+                "pk": {
+                  "type": "keyword",
+                  "ignore_above": 64
+                },
+                "badge": {
+                  "type": "keyword",
+                  "ignore_above": 64
+                },
+                "passport": {
+                  "type": "keyword",
+                  "ignore_above": 32
+                },
+                "credit_card": {
+                  "type": "keyword",
+                  "ignore_above": 24
+                },
+                "token": {
+                  "type": "keyword",
+                  "ignore_above": 96
+                },
+                "coupons": {
+                  "type": "keyword",
+                  "ignore_above": 32
+                }
+              }
+            },
+            "contact": {
+              "properties": {
+                "email": {
+                  "properties": {
+                    "main": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    },
+                    "private": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    },
+                    "business": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    }
+                  }
+                },
+                "phone": {
+                  "properties": {
+                    "main": {
+                      "type": "keyword",
+                      "ignore_above": 32
+                    },
+                    "business": {
+                      "type": "keyword",
+                      "ignore_above": 32
+                    },
+                    "mobile": {
+                      "type": "keyword",
+                      "ignore_above": 32
+                    },
+                    "whatsapp": {
+                      "type": "keyword",
+                      "ignore_above": 32
+                    }
+                  }
+                },
+                "app": {
+                  "properties": {
+                    "whatsapp": {
+                      "type": "keyword"
+                    },
+                    "discord": {
+                      "type": "keyword"
+                    },
+                    "slack": {
+                      "type": "keyword"
+                    },
+                    "twitter": {
+                      "type": "keyword"
+                    },
+                    "telegram": {
+                      "type": "keyword"
+                    },
+                    "wechat": {
+                      "type": "keyword"
+                    },
+                    "viber": {
+                      "type": "keyword"
+                    },
+                    "signal": {
+                      "type": "keyword"
+                    },
+                    "other": {
+                      "type": "flattened"
+                    }
+                  }
+                },
+                "address": {
+                  "properties": {
+                    "town": {
+                      "type": "keyword"
+                    },
+                    "county": {
+                      "type": "keyword"
+                    },
+                    "country": {
+                      "type": "keyword"
+                    },
+                    "postcode": {
+                      "type": "keyword"
+                    },
+                    "street": {
+                      "type": "keyword"
+                    },
+                    "other": {
+                      "type": "keyword"
+                    }
+                  }
+                },
+                "confirmations": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "job": {
+              "properties": {
+                "position": {
+                  "type": "keyword"
+                },
+                "salary": {
+                  "type": "float"
+                },
+                "type": {
+                  "type": "keyword"
+                },
+                "company": {
+                  "properties": {
+                    "name": {
+                      "type": "keyword"
+                    },
+                    "size": {
+                      "type": "keyword"
+                    },
+                    "segment": {
+                      "type": "keyword"
+                    },
+                    "country": {
+                      "type": "keyword"
+                    }
+                  }
+                },
+                "department": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "preferences": {
+              "properties": {
+                "purchases": {
+                  "type": "keyword"
+                },
+                "colors": {
+                  "type": "keyword"
+                },
+                "sizes": {
+                  "type": "keyword"
+                },
+                "devices": {
+                  "type": "keyword"
+                },
+                "channels": {
+                  "type": "keyword"
+                },
+                "payments": {
+                  "type": "keyword"
+                },
+                "brands": {
+                  "type": "keyword"
+                },
+                "fragrances": {
+                  "type": "keyword"
+                },
+                "services": {
+                  "type": "keyword"
+                },
+                "other": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "loyalty": {
+              "properties": {
+                "codes": {
+                  "type": "keyword"
+                },
+                "card": {
+                  "properties": {
+                    "id": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    },
+                    "name": {
+                      "type": "keyword"
+                    },
+                    "issuer": {
+                      "type": "keyword"
+                    },
+                    "points": {
+                      "type": "float"
+                    },
+                    "expires": {
+                      "type": "date",
+                      "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                    }
+                  }
+                }
+              }
+            },
+            "message": {
+              "properties": {
+                "id": {
+                  "type": "keyword", "ignore_above": 36
+                },
+                "conversation": {
+                  "type": "keyword", "ignore_above": 36
+                },
+                "type": {
+                  "type": "keyword", "ignore_above": 32
+                },
+                "text": {
+                  "type": "text"
+                },
+                "sender": {
+                  "type": "keyword",  "ignore_above": 96
+                },
+                "recipient": {
+                  "type": "keyword",  "ignore_above": 96
+                },
+                "status": {
+                  "type": "keyword",  "ignore_above": 64
+                },
+                "error": {
+                  "properties": {
+                    "reason": {
+                      "type": "keyword",  "ignore_above": 256
+                    }
+                  }
+                },
+                "aux": {
+                  "type": "flattened"
+                }
+              }
+            },
+            "ec": {
+              "properties": {
+                "order": {
+                  "properties": {
+                    "id": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    },
+                    "status": {
+                      "type": "keyword",
+                      "ignore_above": 32
+                    },
+                    "receivable": {
+                      "properties": {
+                        "value": {
+                          "type": "float"
+                        },
+                        "due_date": {
+                           "type": "date",
+                           "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                        },
+                        "currency": {
+                          "type": "text"
+                        }
+                      }
+                    },
+                    "payable": {
+                      "properties": {
+                        "value": {
+                          "type": "float"
+                        },
+                        "due_date": {
+                           "type": "date",
+                           "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                        },
+                        "currency": {
+                          "type": "text"
+                        }
+                      }
+                    },
+                    "income": {
+                      "properties": {
+                        "value": {
+                          "type": "float"
+                        },
+                        "due_date": {
+                           "type": "date",
+                           "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                        },
+                        "currency": {
+                          "type": "text"
+                        }
+                      }
+                    },
+                    "cost": {
+                      "properties": {
+                        "value": {
+                          "type": "float"
+                        },
+                        "due_date": {
+                           "type": "date",
+                           "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                        },
+                        "currency": {
+                          "type": "text"
+                        }
+                      }
+                    },
+                    "affiliation": {
+                      "type": "keyword",
+                      "ignore_above": 32
+                    }
+                  }
+                },
+                "checkout": {
+                  "properties": {
+                    "id": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    },
+                    "status": {
+                      "type": "keyword",
+                      "ignore_above": 32
+                    },
+                    "currency": {
+                      "type": "keyword",
+                      "ignore_above": 8
+                    },
+                    "value": {
+                      "type": "float"
+                    }
+                  }
+                },
+                "product": {
+                  "properties": {
+                    "id": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    },
+                    "name": {
+                      "type": "keyword"
+                    },
+                    "sku": {
+                      "type": "keyword",
+                      "ignore_above": 32
+                    },
+                    "category": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    },
+                    "brand": {
+                      "type": "keyword",
+                      "ignore_above": 96
+                    },
+                    "variant": {
+                      "properties": {
+                        "name": {
+                          "type": "keyword"
+                        },
+                        "color": {
+                          "type": "keyword",
+                          "ignore_above": 48
+                        },
+                        "size": {
+                          "type": "keyword",
+                          "ignore_above": 16
+                        }
+                      }
+                    },
+                    "price": {
+                      "type": "float"
+                    },
+                    "quantity": {
+                      "type": "float"
+                    },
+                    "position": {
+                      "type": "integer"
+                    },
+                    "review": {
+                      "type": "text"
+                    },
+                    "rate": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "payment": {
+              "properties": {
+                "method": {
+                  "type": "keyword"
+                },
+                "credit_card": {
+                  "properties": {
+                    "number": {
+                      "type": "keyword",
+                      "ignore_above": 24
+                    },
+                    "expires": {
+                      "type": "date",
+                      "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                    },
+                    "holder": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    }
+                  }
+                }
+              }
+            },
+            "journey": {
+              "properties": {
+                "state": {
+                  "type": "keyword",
+                  "ignore_above": 32
+                },
+                "rate": {
+                  "type": "half_float"
+                }
+              }
+            },
+            "marketing": {
+              "properties": {
+                "coupon": {
+                  "type": "keyword"
+                },
+                "channel": {
+                  "type": "keyword"
+                },
+                "promotion": {
+                  "properties": {
+                    "id": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    },
+                    "name": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": {
+          "properties": {
+            "values": {
+              "type": "keyword"
+            },
+            "count": {
+              "type": "double"
+            }
+          }
+        },
+        "journey": {
+          "properties": {
+            "state": {
+              "type": "keyword",
+              "ignore_above": 32
+            }
+          }
+        }
+      }
+    },
+    "aliases": {
+      "%%ALIAS%%": {}
+    }
+  }
+}

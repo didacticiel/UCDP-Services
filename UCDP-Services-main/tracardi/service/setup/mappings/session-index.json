@@ -1,0 +1,231 @@
+{
+  "index_patterns": [
+    "%%TEMPLATE_PATTERN%%"
+  ],
+  "template": {
+    "settings": {
+    "number_of_shards": %%SHARDS%%,
+    "number_of_replicas": %%REPLICAS%%,
+    "index.refresh_interval": "3s"
+    },
+    "mappings": {
+      "_meta": {
+        "version": "%%VERSION%%",
+        "name": "%%PREFIX%%"
+      },
+      "dynamic": "strict",
+      "properties": {
+        "id": {
+          "type": "keyword", "ignore_above": 64
+        },
+        "primary_id": {
+          "type": "keyword",
+          "ignore_above": 64,
+          "null_value": "NULL"
+        },
+        "metadata": {
+          "properties": {
+            "status": {
+              "type": "keyword",
+              "null_value": "NULL",
+              "ignore_above": 32
+            },
+            "time": {
+              "properties": {
+                "insert": {
+                  "type": "date",
+                  "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                },
+                "create": {
+                  "type": "date",
+                  "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                },
+                "update": {
+                  "type": "date",
+                  "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time ||epoch_millis"
+                },
+                "weekday": {
+                  "type": "byte"
+                },
+                "timestamp": {
+                  "type": "integer"
+                },
+                "duration": {
+                  "type": "float"
+                }
+              }
+            },
+            "channel": {
+              "type": "keyword"
+            },
+            "aux": {
+              "type": "flattened"
+            }
+          }
+        },
+        "profile": {
+          "properties": {
+            "id": {
+              "type": "keyword", "ignore_above": 64
+            },
+            "primary_id": {
+              "type": "keyword",
+              "ignore_above": 64,
+              "null_value": "NULL"
+            }
+          }
+        },
+
+        "device": {
+          "properties": {
+            "name": {
+              "type": "keyword"
+            },
+            "brand": {
+              "type": "keyword"
+            },
+            "model": {
+              "type": "keyword"
+            },
+            "ip": {
+              "type": "keyword",
+              "ignore_above": 18
+            },
+            "type": {
+              "type": "keyword"
+            },
+            "touch": {
+              "type": "boolean"
+            },
+            "resolution": {
+              "type": "keyword",
+              "ignore_above": 32
+            },
+            "color_depth": {
+              "type": "integer"
+            },
+            "orientation": {
+              "type": "keyword",
+              "ignore_above": 32
+            },
+            "geo": {
+              "properties": {
+                "country": {
+                  "properties": {
+                    "name": {
+                      "type": "keyword"
+                    },
+                    "code": {
+                      "type": "keyword",
+                      "ignore_above": 10
+                    }
+                  }
+                },
+                "county": {
+                   "type": "keyword",
+                   "ignore_above": 64
+                },
+                "city": {
+                  "type": "keyword",
+                   "ignore_above": 64
+                },
+                "latitude": {
+                  "type": "float"
+                },
+                "longitude": {
+                  "type": "float"
+                },
+                "location": {
+                  "ignore_malformed": true,
+                  "type": "geo_point"
+                },
+                "postal": {
+                  "type": "keyword",
+                  "ignore_above": 24
+                }
+              }
+            }
+          }
+        },
+        "os": {
+          "properties": {
+            "name": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "version": {
+              "type": "keyword",
+              "ignore_above": 32
+            }
+          }
+        },
+        "app": {
+          "properties": {
+            "type": {
+              "type": "keyword"
+            },
+            "bot": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "version": {
+              "type": "keyword"
+            },
+            "language": {
+              "type": "keyword",
+              "ignore_above": 32
+            },
+            "resolution": {
+              "type": "keyword",
+              "ignore_above": 32
+            }
+          }
+        },
+
+        "utm": {
+          "properties": {
+            "source": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "medium": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "campaign": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "term": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+            "content": {
+              "type": "keyword",
+              "ignore_above": 96
+            }
+          }
+        },
+
+        "context": {
+          "type": "flattened"
+        },
+        "properties": {
+          "type": "flattened"
+        },
+        "traits": {
+           "dynamic": "true",
+           "type": "object"
+        },
+        "aux": {
+          "type": "flattened"
+        }
+      }
+    },
+    "aliases": {
+      "%%ALIAS%%": {}
+    }
+  }
+}
